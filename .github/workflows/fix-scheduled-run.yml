@@ -1,0 +1,23 @@
+name: 'Nightly Merge to Release'
+on:
+  schedule:
+    - cron:  '*/2 * * * *'
+  workflow_dispatch:
+jobs:
+  nightly-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+          ref: 'fix-scheduled-run'
+      - name: Merge Fast Forward Only
+        uses: intractive/github-action-merge-fast-forward@fix-scheduled-run
+        with:
+          # Branch to merge
+          branchtomerge: fix-scheduled-run
+          # Branch that will be updated
+          branch: merge-scheduled-run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
